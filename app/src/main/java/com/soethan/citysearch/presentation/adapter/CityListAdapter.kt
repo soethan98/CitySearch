@@ -2,13 +2,13 @@ package com.soethan.citysearch.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.soethan.citysearch.databinding.ItemCityBinding
+import com.soethan.citysearch.domain.model.City
 import com.soethan.citysearch.presentation.adapter.callbacks.UiCityModelDiffCallback
-import com.soethan.citysearch.presentation.model.UiCityModel
 
-class CityListAdapter : ListAdapter<UiCityModel,CityListAdapter.CityItemViewHolder>(UiCityModelDiffCallback()){
+class CityListAdapter : PagingDataAdapter<City,CityListAdapter.CityItemViewHolder>(UiCityModelDiffCallback()){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityItemViewHolder {
@@ -18,6 +18,7 @@ class CityListAdapter : ListAdapter<UiCityModel,CityListAdapter.CityItemViewHold
 
     override fun onBindViewHolder(holder: CityItemViewHolder, position: Int) {
         val item = getItem(position)
+
         item?.let {
             holder.bindItem(it)
         }
@@ -25,8 +26,8 @@ class CityListAdapter : ListAdapter<UiCityModel,CityListAdapter.CityItemViewHold
 
 
 
-    class CityItemViewHolder(private val binding: ItemCityBinding):RecyclerView.ViewHolder(binding.root){
-        fun bindItem(item:UiCityModel){
+    inner class CityItemViewHolder(private val binding: ItemCityBinding):RecyclerView.ViewHolder(binding.root){
+        fun bindItem(item:City){
             binding.apply {
                 tvCityTitle.text = item.title
             }

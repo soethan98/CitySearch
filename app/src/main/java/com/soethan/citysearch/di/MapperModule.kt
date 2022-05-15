@@ -1,6 +1,7 @@
 package com.soethan.citysearch.di
 
-import com.soethan.citysearch.mapper.DataMapper
+import com.soethan.citysearch.data.mapper.EntityMapper
+import com.soethan.citysearch.mapper.DomainMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,11 @@ import javax.inject.Singleton
 object MapperModule {
     @Provides
     @Singleton
-    fun provideDataMapper() = DataMapper()
+    fun provideDataMapper() = DomainMapper()
+
+    @Provides
+    @Singleton
+    fun provideEntityMapper() = EntityMapper()
 }
 
 

@@ -1,9 +1,7 @@
 package com.soethan.citysearch.di
 
-import com.soethan.citysearch.network.ApiDataSource
-import com.soethan.citysearch.network.ApiDataSourceImpl
-import com.soethan.citysearch.repo.CitySearchRepo
-import com.soethan.citysearch.repo.CitySearchRepoImpl
+import com.soethan.citysearch.domain.CitySearchRepo
+import com.soethan.citysearch.data.CitySearchRepoImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,7 +16,5 @@ abstract class RepoModule {
     @Singleton
     abstract fun bindCitySearchRepo(citySearchRepoImpl: CitySearchRepoImpl): CitySearchRepo
 
-    @Binds
-    @Singleton
-    abstract fun bindApiDataSource(apiDataSourceImpl: ApiDataSourceImpl): ApiDataSource
+
 }

@@ -1,9 +1,8 @@
 package com.soethan.citysearch.domain.model
 
-data class CityDomainModel(
+data class City(
     val id: Int,
-    val name: String,
-    val cityName: String,
+    val title: String,
     val lat: Double,
     val long: Double
 )

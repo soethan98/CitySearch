@@ -1,6 +1,6 @@
-package com.soethan.citysearch.network
+package com.soethan.citysearch.data.network
 
-import com.soethan.citysearch.network.model.CityResponse
+import com.soethan.citysearch.data.network.model.CityResponse
 import retrofit2.http.GET
 
 interface CityService {

@@ -85,4 +85,12 @@ dependencies {
     implementation Gson.core
 
 
+    implementation AndroidRoom.room_ktx
+    kapt AndroidRoom.room_compiler
+
+    implementation Paging3.paging_runtime
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01"
+
+
+
 }

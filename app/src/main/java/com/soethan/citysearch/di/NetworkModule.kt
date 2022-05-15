@@ -2,9 +2,7 @@ package com.soethan.citysearch.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.soethan.citysearch.mapper.DataMapper
-import com.soethan.citysearch.network.ApiDataSourceImpl
-import com.soethan.citysearch.network.CityService
+import com.soethan.citysearch.data.network.CityService
 import com.soethan.citysearch.utils.Urls
 import dagger.Module
 import dagger.Provides
@@ -28,7 +26,7 @@ object NetworkModule {
     fun provideRetrofit(gson: Gson) : CityService {
         return Retrofit.Builder().baseUrl(Urls.BASE_URL).client(OkHttpClient.Builder().also { client ->
             val logging = HttpLoggingInterceptor()
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            logging.setLevel(HttpLoggingInterceptor.Level.HEADERS)
             client.addInterceptor(logging)
         }.build()).addConverterFactory(GsonConverterFactory.create(gson)).build()
             .create(CityService::class.java)

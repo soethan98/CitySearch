@@ -65,6 +65,18 @@ object Coroutines {
     const val coroutine_android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 }
 
+object AndroidRoom{
+    //room
+    private const val version= "2.3.0"
+    const val room_ktx =  "androidx.room:room-ktx:$version"
+    const val room_compiler = "androidx.room:room-compiler:$version"
+}
+
+object Paging3{
+    private const val  version= "3.1.1"
+    const val paging_runtime = "androidx.paging:paging-runtime:$version"
+}
+
 
 
 object Repo {

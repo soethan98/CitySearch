@@ -1,6 +1,9 @@
-package com.soethan.citysearch.network.model
+package com.soethan.citysearch.data.network.model
 
+import androidx.room.Embedded
+import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
+
 
 data class CityResponse(
     @SerializedName("_id")
