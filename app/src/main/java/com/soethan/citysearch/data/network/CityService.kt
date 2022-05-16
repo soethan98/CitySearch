@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface CityService {
 
     @GET("cities")
-    suspend fun loadAllCities() :List<CityResponse>
+    suspend fun loadAllCities(): List<CityResponse>
 }

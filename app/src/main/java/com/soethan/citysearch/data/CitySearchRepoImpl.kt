@@ -12,7 +12,6 @@ import com.soethan.citysearch.domain.model.City
 import com.soethan.citysearch.mapper.DomainMapper
 import com.soethan.citysearch.utils.ConnectivityChecker
 import com.soethan.citysearch.utils.ErrorBody
-import com.soethan.citysearch.utils.ResultWrapper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,39 +32,16 @@ class CitySearchRepoImpl @Inject constructor(
     private val connectivityChecker: ConnectivityChecker
 ) : CitySearchRepo {
 
-    override suspend fun loadAllCities(fetch:Boolean): Flow<PagingData<City>> {
+    override suspend fun loadAllCities(fetch: Boolean): Flow<PagingData<City>> {
 
-         return withContext(Dispatchers.IO) {
-             if(fetch && connectivityChecker.isNetworkAvailable()) {
-                 val result = safeApiCall(Dispatchers.IO) {
-                     return@safeApiCall apiDataSource.loadAllCities()
-                 }
+        return withContext(Dispatchers.IO) {
+            if (fetch && connectivityChecker.isNetworkAvailable()) {
+                val result = safeApiCall(Dispatchers.IO) {
+                    return@safeApiCall apiDataSource.loadAllCities()
+                }
 
-                 localDataSource.saveAllCities(entityMapper.transform(result))
-             }
-                 Pager(
-                            PagingConfig(
-                                pageSize = 20,
-                                enablePlaceholders = false,
-                                initialLoadSize = 20
-                            ),
-
-                            ) {
-                            CityPagingSource(
-                                localDataSource = localDataSource,
-                                domainModel = domainMapper
-                            )
-                        }.flow
-
-
-
-         }
-    }
-
-
-
-    override suspend fun searchCities(keyword: String): Flow<PagingData<City>> {
-        return withContext(Dispatchers.IO){
+                localDataSource.saveAllCities(entityMapper.transform(result))
+            }
             Pager(
                 PagingConfig(
                     pageSize = 20,
@@ -73,8 +49,30 @@ class CitySearchRepoImpl @Inject constructor(
                     initialLoadSize = 20
                 ),
 
-                ){
-                CityPagingSource(localDataSource = localDataSource,
+                ) {
+                CityPagingSource(
+                    localDataSource = localDataSource,
+                    domainModel = domainMapper
+                )
+            }.flow
+
+
+        }
+    }
+
+
+    override suspend fun searchCities(keyword: String): Flow<PagingData<City>> {
+        return withContext(Dispatchers.IO) {
+            Pager(
+                PagingConfig(
+                    pageSize = 20,
+                    enablePlaceholders = false,
+                    initialLoadSize = 20
+                ),
+
+                ) {
+                CityPagingSource(
+                    localDataSource = localDataSource,
                     domainModel = domainMapper,
                     query = keyword
                 )
@@ -82,13 +80,15 @@ class CitySearchRepoImpl @Inject constructor(
         }
     }
 
-   private suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher,
-                                apiCall: suspend () -> T):T{
-        return withContext(dispatcher){
+    private suspend fun <T> safeApiCall(
+        dispatcher: CoroutineDispatcher,
+        apiCall: suspend () -> T
+    ): T {
+        return withContext(dispatcher) {
             try {
                 return@withContext apiCall.invoke()
-            }catch (t:Throwable){
-                throw when(t){
+            } catch (t: Throwable) {
+                throw when (t) {
                     is SocketException -> ErrorBody(errMsg = "No internet connection")
                     is ConnectException -> ErrorBody(errMsg = t.localizedMessage)
                     is HttpException -> {
@@ -100,7 +100,7 @@ class CitySearchRepoImpl @Inject constructor(
                             ErrorBody::class.java
                         )
                         val message = gsonErrorBody.message
-                        ErrorBody(errMsg = message ?: "",status = code)
+                        ErrorBody(errMsg = message ?: "", status = code)
                     }
                     else -> ErrorBody(errMsg = "Something went wrong")
                 }

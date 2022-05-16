@@ -8,12 +8,13 @@ import com.soethan.citysearch.databinding.ItemCityBinding
 import com.soethan.citysearch.domain.model.City
 import com.soethan.citysearch.presentation.adapter.callbacks.UiCityModelDiffCallback
 
-class CityListAdapter(private val clickListener: OnCityItemClickListener) : PagingDataAdapter<City,CityListAdapter.CityItemViewHolder>(UiCityModelDiffCallback()){
+class CityListAdapter(private val clickListener: OnCityItemClickListener) :
+    PagingDataAdapter<City, CityListAdapter.CityItemViewHolder>(UiCityModelDiffCallback()) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityItemViewHolder {
-       val binding = ItemCityBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-        return CityItemViewHolder(binding,clickListener)
+        val binding = ItemCityBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CityItemViewHolder(binding, clickListener)
     }
 
     override fun onBindViewHolder(holder: CityItemViewHolder, position: Int) {
@@ -22,18 +23,15 @@ class CityListAdapter(private val clickListener: OnCityItemClickListener) : Pagi
         item?.let {
             holder.bindItem(it)
         }
-        //holder.itemView.setOnClickListener {
-//            if (item != null) {
-//                onClickListener.onClickNews(item)
-//            }
-//        }
+
     }
 
 
-
-    inner class CityItemViewHolder(private val binding: ItemCityBinding,
-                                   private var clickListener:OnCityItemClickListener):RecyclerView.ViewHolder(binding.root){
-        fun bindItem(item:City){
+    inner class CityItemViewHolder(
+        private val binding: ItemCityBinding,
+        private var clickListener: OnCityItemClickListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bindItem(item: City) {
             binding.apply {
                 tvCityTitle.text = item.title
 
@@ -47,7 +45,7 @@ class CityListAdapter(private val clickListener: OnCityItemClickListener) : Pagi
     }
 
 
-    open class OnCityItemClickListener(val clickListener: (cityItem: City) -> Unit){
+    class OnCityItemClickListener(val clickListener: (cityItem: City) -> Unit) {
         fun onCityClick(cityItem: City) = clickListener(cityItem)
     }
 }

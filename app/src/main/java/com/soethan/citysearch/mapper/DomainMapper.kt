@@ -4,12 +4,12 @@ import com.soethan.citysearch.data.local.entity.CityEntity
 import com.soethan.citysearch.domain.model.City
 import javax.inject.Inject
 
-class DomainMapper @Inject constructor(){
+class DomainMapper @Inject constructor() {
 
-    fun transformTo(cityDatas:List<CityEntity>):List<City> = cityDatas.map(this::transformItemTo)
+    fun transformTo(cityDatas: List<CityEntity>): List<City> = cityDatas.map(this::transformItemTo)
 
-    private fun transformItemTo(cityData: CityEntity) : City {
-        return with(cityData){
+    private fun transformItemTo(cityData: CityEntity): City {
+        return with(cityData) {
             City(
                 id = id,
                 title = "$cityName,$countryName",

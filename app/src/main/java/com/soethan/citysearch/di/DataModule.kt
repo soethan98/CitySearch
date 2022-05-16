@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class DataModule {
     @Binds
-    abstract fun bindLocalDataSource(localDataSourceImpl: LocalDataSourceImpl):LocalDataSource
+    abstract fun bindLocalDataSource(localDataSourceImpl: LocalDataSourceImpl): LocalDataSource
 
 
     @Binds

@@ -19,13 +19,6 @@ fun View.hide(): View {
     return this
 }
 
-fun View.toggleVisibilty(status:Boolean){
-    if(status){
-        show()
-    }else{
-        hide()
-    }
-}
 
 fun View.isVisible(): Boolean {
     if (visibility == View.VISIBLE) {

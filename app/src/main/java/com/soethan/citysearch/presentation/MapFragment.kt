@@ -47,23 +47,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         if (lat == null && lon == null) return
-        val marker= LatLng(lat!!, lon!!)
+        val marker = LatLng(lat!!, lon!!)
         map.animateCamera(CameraUpdateFactory.newLatLng(marker))
 
         map.addMarker(
             MarkerOptions()
-                .position(marker))
+                .position(marker)
+        )
 
 
+    }
 
 
-}
-
-
-override fun onDestroyView() {
-    super.onDestroyView()
-    _binding = null
-}
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 
 }

@@ -5,5 +5,5 @@ import com.soethan.citysearch.data.network.model.CityResponse
 
 interface ApiDataSource {
 
-    suspend fun loadAllCities() :List<CityResponse>
+    suspend fun loadAllCities(): List<CityResponse>
 }

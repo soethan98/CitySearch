@@ -8,10 +8,11 @@ import javax.inject.Inject
 class EntityMapper @Inject constructor() {
 
 
-    fun transform(response:List<CityResponse>) : List<CityEntity> = response.map(this::transformItem)
+    fun transform(response: List<CityResponse>): List<CityEntity> =
+        response.map(this::transformItem)
 
-    private fun transformItem(responseItem:CityResponse):CityEntity{
-        with(responseItem){
+    private fun transformItem(responseItem: CityResponse): CityEntity {
+        with(responseItem) {
             return CityEntity(
                 id = id,
                 cityName = name,

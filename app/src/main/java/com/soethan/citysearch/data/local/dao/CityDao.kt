@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface CityDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveCities(cityList:List<CityEntity>)
+    suspend fun saveCities(cityList: List<CityEntity>)
 
 
     @Query("SELECT * FROM city_table LIMIT :limit OFFSET :offset")
@@ -20,8 +20,7 @@ interface CityDao {
 
 
     @Query("SELECT * FROM city_table WHERE cityName LIKE :keyword|| '%' LIMIT :limit OFFSET :offset")
-    suspend fun searchCities(limit: Int, offset: Int,keyword:String):List<CityEntity>
-
+    suspend fun searchCities(limit: Int, offset: Int, keyword: String): List<CityEntity>
 
 
 }

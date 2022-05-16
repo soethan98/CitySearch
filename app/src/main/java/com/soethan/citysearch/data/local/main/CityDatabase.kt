@@ -6,7 +6,7 @@ import com.soethan.citysearch.data.local.dao.CityDao
 import com.soethan.citysearch.data.local.entity.CityEntity
 
 
-@Database(entities = [CityEntity::class],version = 1)
-abstract class CityDatabase:RoomDatabase(){
-    abstract fun cityDao():CityDao
+@Database(entities = [CityEntity::class], version = 1)
+abstract class CityDatabase : RoomDatabase() {
+    abstract fun cityDao(): CityDao
 }

@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class ConnectivityChecker  @Inject constructor(@ApplicationContext private val context: Context) {
+class ConnectivityChecker @Inject constructor(@ApplicationContext private val context: Context) {
 
     fun isNetworkAvailable(): Boolean {
         val service = Context.CONNECTIVITY_SERVICE

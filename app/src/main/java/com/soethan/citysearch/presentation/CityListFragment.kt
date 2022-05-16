@@ -36,15 +36,17 @@ class CityListFragment : Fragment() {
     private var _binding: FragmentCityListBinding? = null
     private val binding get() = _binding!!
 
-    private val cityAdapter: CityListAdapter by lazy { CityListAdapter(clickListener = CityListAdapter.OnCityItemClickListener{city ->
-        val action = CityListFragmentDirections.toMapFragment(city.lat.toFloat(),city.long.toFloat())
-        findNavController().navigate(action)
-    }) }
+    private val cityAdapter: CityListAdapter by lazy {
+        CityListAdapter(clickListener = CityListAdapter.OnCityItemClickListener { city ->
+            val action =
+                CityListFragmentDirections.toMapFragment(city.lat.toFloat(), city.long.toFloat())
+            findNavController().navigate(action)
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +61,7 @@ class CityListFragment : Fragment() {
         }
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         binding.apply {
             rvCities.layoutManager = LinearLayoutManager(requireContext())
             rvCities.adapter = cityAdapter.withLoadStateHeaderAndFooter(
@@ -69,18 +71,18 @@ class CityListFragment : Fragment() {
         }
     }
 
-    private fun observeData(){
+    private fun observeData() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             cityListViewModel.eventChannel.collectLatest {
-                when(it){
+                when (it) {
                     is CityListViewModel.Event.ShowErrorMessage -> requireContext().toast((it.error as ErrorBody).errMsg)
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cityListViewModel.citiesStateFlow.collectLatest { data ->
                     data?.let {
                         binding.progressCities.hide()
@@ -92,7 +94,7 @@ class CityListFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 cityListViewModel.dataLoadingStatus.collectLatest { isLoading ->
                     binding.progressCities.isVisible = isLoading
                     binding.rvCities.isVisible = !isLoading
@@ -109,7 +111,8 @@ class CityListFragment : Fragment() {
                 if (count > 0) binding.btnSearchClear.show() else binding.btnSearchClear.hide()
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
 
             override fun afterTextChanged(editable: Editable?) {
                 if (!editable.isNullOrEmpty()) {
