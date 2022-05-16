@@ -20,3 +20,9 @@ typealias ErrorResult = Lce.Error
 typealias LoadingResult = Lce.Loading
 
 typealias SuccessResult<T> = Lce.Success<T>
+
+sealed class ResultWrapper<out T> {
+    data class Success<out T>(val data: T) : ResultWrapper<T>()
+    data class GenericError(val code: Int?, val message: String?) : ResultWrapper<Nothing>()
+    object NetworkError : ResultWrapper<Nothing>()
+}

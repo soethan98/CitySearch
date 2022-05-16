@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -18,8 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.soethan.citysearch.databinding.FragmentCityListBinding
 import com.soethan.citysearch.presentation.adapter.CityListAdapter
 import com.soethan.citysearch.presentation.adapter.CityLoadStateAdapter
-import com.soethan.citysearch.utils.hide
-import com.soethan.citysearch.utils.toast
+import com.soethan.citysearch.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -52,6 +52,11 @@ class CityListFragment : Fragment() {
         setUpRecyclerView()
         watchSearchTextField()
         observeData()
+
+        binding.btnSearchClear.setOnClickListener {
+            binding.etSearch.text.clear()
+            cityListViewModel.loadAllCities(false)
+        }
     }
 
     private fun setUpRecyclerView(){
@@ -69,7 +74,7 @@ class CityListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             cityListViewModel.eventChannel.collectLatest {
                 when(it){
-                    is CityListViewModel.Event.ShowErrorMessage -> requireContext().toast(it.error.localizedMessage)
+                    is CityListViewModel.Event.ShowErrorMessage -> requireContext().toast((it.error as ErrorBody).errMsg)
                 }
             }
         }
@@ -85,15 +90,26 @@ class CityListFragment : Fragment() {
             }
 
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                cityListViewModel.dataLoadingStatus.collectLatest { isLoading ->
+                    binding.progressCities.isVisible = isLoading
+                    binding.rvCities.isVisible = !isLoading
+
+                }
+            }
+
+        }
     }
 
     private fun watchSearchTextField() {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count > 0) binding.btnSearchClear.show() else binding.btnSearchClear.hide()
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
             override fun afterTextChanged(editable: Editable?) {
                 if (!editable.isNullOrEmpty()) {

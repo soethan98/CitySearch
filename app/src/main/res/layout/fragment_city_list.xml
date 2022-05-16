@@ -11,19 +11,42 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <EditText
-            android:id="@+id/etSearch"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Search"
-            android:background="@drawable/et_input"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="10dp"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:paddingStart="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="RtlSymmetry" />
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Search"
+                android:background="@drawable/et_input"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnSearchClear"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:paddingStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                 />
+            <com.google.android.material.button.MaterialButton
+                android:visibility="gone"
+                android:id="@+id/btnSearchClear"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end"
+                app:icon="@drawable/ic_close"
+                app:iconTint="@color/black"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="16dp"
             android:id="@+id/rvCities"
@@ -42,6 +65,7 @@
 
 
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/progressCities"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

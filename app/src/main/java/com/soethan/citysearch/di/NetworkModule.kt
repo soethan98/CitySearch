@@ -1,12 +1,16 @@
 package com.soethan.citysearch.di
 
+import android.app.Application
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.soethan.citysearch.data.network.CityService
+import com.soethan.citysearch.utils.ConnectivityChecker
 import com.soethan.citysearch.utils.Urls
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,6 +38,11 @@ object NetworkModule {
 
 
 
+    @Provides
+    @Singleton
+    fun provideConnectivityChecker(@ApplicationContext appContext:Context):ConnectivityChecker{
+        return ConnectivityChecker(appContext)
+    }
 
     
 
