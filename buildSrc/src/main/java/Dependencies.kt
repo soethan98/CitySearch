@@ -36,12 +36,19 @@ object Gson {
     const val core = "com.google.code.gson:gson:$version"
 }
 
+object GoogleMaps{
+    const val play_service = "com.google.android.gms:play-services-location:19.0.1"
+    const val play_service_maps = "com.google.android.gms:play-services-maps:18.0.0"
+}
+
 
 object AndroidArchLifeCycle {
     private const val lifecycle_version = "2.5.0-rc01"
     const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     const val liveData = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     const val compiler = "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    const val runtime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
 }
 
 object AndroidArchNavigation {

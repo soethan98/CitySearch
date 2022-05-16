@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.soethan.citysearch.databinding.FragmentCityListBinding
 import com.soethan.citysearch.presentation.adapter.CityListAdapter
@@ -21,9 +22,11 @@ import com.soethan.citysearch.utils.hide
 import com.soethan.citysearch.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class CityListFragment : Fragment() {
@@ -33,12 +36,16 @@ class CityListFragment : Fragment() {
     private var _binding: FragmentCityListBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var cityAdapter: CityListAdapter
+    private val cityAdapter: CityListAdapter by lazy { CityListAdapter(clickListener = CityListAdapter.OnCityItemClickListener{city ->
+        val action = CityListFragmentDirections.toMapFragment(city.lat.toFloat(),city.long.toFloat())
+        findNavController().navigate(action)
+    }) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +55,6 @@ class CityListFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(){
-        cityAdapter = CityListAdapter()
         binding.apply {
             rvCities.layoutManager = LinearLayoutManager(requireContext())
             rvCities.adapter = cityAdapter.withLoadStateHeaderAndFooter(
@@ -60,9 +66,14 @@ class CityListFragment : Fragment() {
 
     private fun observeData(){
 
-        cityListViewModel.throwableLiveData.observe(viewLifecycleOwner, Observer {
-            requireContext().toast(it.localizedMessage)
-        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            cityListViewModel.eventChannel.collectLatest {
+                when(it){
+                    is CityListViewModel.Event.ShowErrorMessage -> requireContext().toast(it.error.localizedMessage)
+                }
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 cityListViewModel.citiesStateFlow.collectLatest { data ->

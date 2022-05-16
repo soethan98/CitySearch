@@ -10,12 +10,19 @@
         android:id="@+id/tvCityTitle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="16dp"
         android:textAppearance="?textAppearanceHeadline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="@string/app_name"/>
+
+    <TextView
+        android:id="@+id/tvCoord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvCityTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

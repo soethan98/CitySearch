@@ -10,17 +10,18 @@
         android:name="com.soethan.citysearch.presentation.CityListFragment"
         android:label="fragment_city_list"
         tools:layout="@layout/fragment_city_list" >
+
+
         <action
             android:id="@+id/toMapFragment"
             app:destination="@id/mapFragment" />
-
-
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.soethan.citysearch.presentation.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
+
         <argument
             android:name="lat"
             app:argType="float" />

@@ -9,12 +9,18 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.soethan.citysearch.domain.CitySearchRepo
 import com.soethan.citysearch.domain.model.City
+import com.soethan.citysearch.utils.Lce
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@FlowPreview
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class CityListViewModel @Inject constructor(private val cityRepo: CitySearchRepo) : ViewModel() {
 
@@ -22,9 +28,10 @@ class CityListViewModel @Inject constructor(private val cityRepo: CitySearchRepo
     private val _citiesStateFlow = MutableStateFlow<PagingData<City>?>(null)
     val citiesStateFlow  = _citiesStateFlow.asStateFlow()
 
+    private val _eventChannel = Channel<Event>()
+    val eventChannel = _eventChannel.receiveAsFlow()
 
-    private val _throwableLiveData = MutableLiveData<Throwable>()
-    val throwableLiveData:LiveData<Throwable> = _throwableLiveData
+
 
     val searchKeyWord = MutableStateFlow<String>("")
 
@@ -39,7 +46,7 @@ class CityListViewModel @Inject constructor(private val cityRepo: CitySearchRepo
 
         viewModelScope.launch {
             cityRepo.loadAllCities().cachedIn(this).catch { e->
-                _throwableLiveData.postValue(e)
+                _eventChannel.send(Event.ShowErrorMessage(e))
             }.collectLatest {
                 _citiesStateFlow.emit(it)
             }
@@ -55,13 +62,15 @@ class CityListViewModel @Inject constructor(private val cityRepo: CitySearchRepo
                     cityRepo.searchCities(query).cachedIn(this)
                 }.catch { e ->
                     Log.i("MainViewModel",e.message ?: e.localizedMessage)
-                _throwableLiveData.postValue(e)
+                    _eventChannel.send(Event.ShowErrorMessage(e))
                 }.flowOn(Dispatchers.IO).collectLatest {
                     _citiesStateFlow.emitAll(it)
                 }
         }
+     }
 
 
-
+    sealed class Event{
+        data class ShowErrorMessage(val error: Throwable) : Event()
     }
 }

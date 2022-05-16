@@ -9,6 +9,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
         classpath AndroidArchNavigation.gradle_plugin
         classpath DaggerHilt.hiltGradlePlugin
+        classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
 
 
         // NOTE: Do not place your application dependencies here; they belong
